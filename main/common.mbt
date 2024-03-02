@@ -11,6 +11,10 @@ fn Loc::new() -> Loc {
   Loc::{ pos : 0, ln : 1, col : 1 }
 }
 
+fn copy(self : Loc) -> Loc {
+  Loc::{ pos : self.pos, ln : self.ln, col : self.col }
+}
+
 fn next_line(self : Loc) {
   self.pos = self.pos + 1
   self.ln = self.ln + 1

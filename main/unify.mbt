@@ -3,6 +3,10 @@ struct Unifier {
   globals : RHTable[ID, Def[Term]]
 }
 
+fn Unifier::new(ids : IDs, globals : RHTable[ID, Def[Term]]) -> Unifier {
+  Unifier::{ ids : ids, globals : globals }
+}
+
 // 只做相等检查
 fn unify(self : Unifier, lhs : Term, rhs : Term) -> Bool {
   match (lhs, rhs) {
