@@ -1,11 +1,10 @@
 struct Normalizer {
   ids : IDs
-  globals : RHTable[ID, Def[Term]]
   env : RHTable[ID, Term]
 }
 
-fn Normalizer::new(ids : IDs, globals : RHTable[ID, Def[Term]]) -> Normalizer {
-  Normalizer::{ ids : ids, globals : globals, env : RHTable::new(42) }
+fn Normalizer::new(ids : IDs) -> Normalizer {
+  Normalizer::{ ids : ids, env : RHTable::new(42) }
 }
 
 fn term(self : Normalizer, tm : Term) -> Term {
@@ -13,6 +12,15 @@ fn term(self : Normalizer, tm : Term) -> Term {
     Refer(v) =>
       match self.env[v.id] {
         None => tm
+        // 进行变量替换前需要rename
+        // 一个因为不rename发生变量捕获的例子：
+        // def Foo#1(x#2) { #2 }
+        // def Bar#3() { Foo#1 }
+        // def XXX#4() { Foo#1 Bar#3 }
+        // ======================================================
+        // def Bar#3() { lambda x#2 : x#2 }
+        // ======================================================
+        // def XXX#4() { (lambda x#2 : x#2) (lambda x#2 : x#2) }
         Some(tm) => self.term(Renamer::new(self.ids).rename(tm))
       }
     App(f, x) => {

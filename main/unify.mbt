@@ -25,5 +25,5 @@ fn unify(self : Unifier, lhs : Term, rhs : Term) -> Bool {
 }
 
 fn nf(self : Unifier) -> Normalizer {
-  Normalizer::new(self.ids, self.globals)
+  Normalizer::new(self.ids)
 }
