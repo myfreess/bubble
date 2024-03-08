@@ -2,28 +2,13 @@
 
 
 struct Loc {
-  mut pos : Int // position
-  mut ln : Int // line
-  mut col : Int // column
-}
+  pos : Int // position
+  ln : Int // line
+  col : Int // column
+} derive (Debug)
 
-fn Loc::new() -> Loc {
-  Loc::{ pos : 0, ln : 1, col : 1 }
-}
-
-fn copy(self : Loc) -> Loc {
-  Loc::{ pos : self.pos, ln : self.ln, col : self.col }
-}
-
-fn next_line(self : Loc) {
-  self.pos = self.pos + 1
-  self.ln = self.ln + 1
-  self.col = 1
-}
-
-fn next_column(self : Loc) {
-  self.pos = self.pos + 1
-  self.col = self.col + 1
+fn Loc::new(pos : Int, ln : Int, col : Int) -> Loc {
+  Loc::{ pos : pos, ln : ln, col : col }
 }
 
 fn to_string(self : Loc) -> String {
@@ -32,7 +17,7 @@ fn to_string(self : Loc) -> String {
   "\(line):\(column)"
 }
 
-type ID Int derive(Eq)
+type ID Int derive(Eq, Debug)
 
 fn hash(self : ID) -> Int {
   let ID(n) = self
@@ -42,7 +27,7 @@ fn hash(self : ID) -> Int {
 struct Var {
   text : String
   id : ID
-}
+} derive (Debug)
 
 fn to_string(self : Var) -> String {
   self.text
@@ -69,7 +54,7 @@ fn rename(self : IDs, v : Var) -> Var {
 struct Param[T] {
   name : Var
   typ  : T // Type
-}
+} derive (Debug)
 
 fn to_string[T : Show](self : Param[T]) -> String {
   let name = self.name
@@ -103,4 +88,8 @@ fn to_string[T : Show](self : Def[T]) -> String {
   let ret = self.ret
   let body = self.body
   "fn \(fnname)\(params) -> \(ret) { \n\t \(body) \n\t }"
+}
+
+fn todo[T](msg : String) -> T {
+  abort("TODO: \(msg)")
 }
