@@ -56,7 +56,7 @@ fn eat(self : ParseState, ch : Char) -> Result[Unit, ParseError] {
     None => Err(ParseError((Recoverable, "\(loc): expect \(ch) got None")))
     Some(n) => 
       if n == ch {
-        self.next() |>  ignore
+        self.next() |> ignore
         Ok(())
       } else {
         Err(ParseError((Recoverable, "\(loc): expect \(ch) got \(n)")))
@@ -75,7 +75,7 @@ fn skip_spaces(self : ParseState) {
       None => break
       Some(ch) => 
         if isSpace(ch) {
-          self.next() |>  ignore
+          self.next() |> ignore
         } else {
           break
         }

@@ -73,6 +73,16 @@ struct Def[T] {
   body : T
 }
 
+fn Def::default[T : Default]() -> Def[T] {
+  Def::{
+    loc : Loc::new(-1, -1, -1),
+    name : Var::{ id : ID(-1), text : "dummy" },
+    params : Nil,
+    ret : T::default(),
+    body : T::default()
+  }
+}
+
 fn to_string[T : Show](self : Def[T]) -> String {
   let params = Buffer::make(20)
   loop self.params {
@@ -92,4 +102,21 @@ fn to_string[T : Show](self : Def[T]) -> String {
 
 fn todo[T](msg : String) -> T {
   abort("TODO: \(msg)")
+}
+
+fn reverse[X](this: List[X]) -> List[X] {
+  fn go(acc, xs: List[X]) {
+    match xs {
+      Nil => acc
+      Cons(x, rest) => go((Cons(x, acc) : List[X]), rest)
+    }
+  }
+  go(Nil, this)
+}
+
+fn context[V, E : Show](this : Result[V, E]) -> V {
+  match this {
+    Ok(v) => v
+    Err(err) => abort(err.to_string())
+  }
 }

@@ -54,7 +54,7 @@ fn apply(self : Normalizer, f : Term, arg : Term) -> Term {
   }
 }
 
-fn to_value(self : Normalizer, d : Def[Term]) -> Term {
+fn to_value(d : Def[Term]) -> Term {
   let mut ret = d.body
   loop d.params {
     Nil => ()
@@ -66,7 +66,7 @@ fn to_value(self : Normalizer, d : Def[Term]) -> Term {
   return ret
 }
 
-fn to_typ(self : Normalizer, d : Def[Term]) -> Term {
+fn to_typ(d : Def[Term]) -> Term {
   let mut ret = d.ret
   loop d.params {
     Nil => ()
